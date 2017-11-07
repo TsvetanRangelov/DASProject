@@ -3,7 +3,7 @@ import java.rmi.RemoteException;	//Import the RemoteException class so you can c
 import java.net.MalformedURLException;	//Import the MalformedURLException class so you can catch it
 import java.rmi.NotBoundException;	//Import the NotBoundException class so you can catch it
 
-public class calculatorclient {
+public class nodeclient {
 
     public static void main(String[] args) {
         
@@ -19,7 +19,7 @@ public class calculatorclient {
         
 	try {			
             node c = (node)
-                           Naming.lookup("rmi://" + reg_host + ":" + reg_port + "/CalculatorService");
+                           Naming.lookup("rmi://" + reg_host + ":" + reg_port + "/NodeService");
  
         }
 	catch (MalformedURLException murle) {
