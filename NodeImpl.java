@@ -1,13 +1,16 @@
 import java.rmi.RemoteException;
 
 
-public class nodeimpl
-    extends java.rmi.server.UnicastRemoteObject
-    implements node {
+public class NodeImpl extends java.rmi.server.UnicastRemoteObject implements Node {
 
-	protected nodeimpl() throws RemoteException {
-		super();
-		// TODO Auto-generated constructor stub
+	private String name;
+	private String leaderName = "";
+	private String host;
+
+	private boolean leaderFound = false;
+	
+	public Node(String name, String hostname){
+		
 	}
 
     
