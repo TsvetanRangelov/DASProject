@@ -34,7 +34,7 @@ public class NodeImpl extends java.rmi.server.UnicastRemoteObject implements Nod
 									String res = otherNode.startElection(name);
 
 									if (res.length() > 0){
-										leaderFound = false;
+										leaderFound = true;
 										break;
 									}
 								}
