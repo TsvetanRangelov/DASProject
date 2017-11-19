@@ -18,7 +18,7 @@ public class nodeclient {
       }
         
 	try {			
-            node c = (node)
+            Node c = (Node)
                            Naming.lookup("rmi://" + reg_host + ":" + reg_port + "/NodeService");
  
         }
