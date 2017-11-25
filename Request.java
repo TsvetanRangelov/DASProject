@@ -7,27 +7,27 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-public class PatientClient implements Runnable {
+public class Request implements Runnable {
            
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     
-	private String patientName;
+	private String ID;
 	private String toIP;
 	private int toPort = 1099;
 	private String url = null;
 	private int processingTime = 0;
-	public PatientClient(String pName, String _toIP, int port, int _pTime) {
-		this.patientName = pName;
+	public Request(String ID, String _toIP, int port, int _pTime) {
+		this.ID = ID;
 		this.toIP = _toIP;
 		this.toPort = port;
-		url = "rmi://" + toIP + ":" + toPort + "/HospitalBalancer";
+		url = "rmi://" + toIP + ":" + toPort + "/LoadBalancer";
 		this.processingTime = _pTime;
 	}
 	
 	@Override
 	public void run() {
 		if ( System.getSecurityManager() == null ) {
-			System.setProperty("java.security.policy", System.class.getResource("/java.policy").toString());
+			System.setProperty("java.security.policy", System.class.getResource("/resources/java.policy").toString());
 			System.setSecurityManager( new SecurityManager() );
 		}
 		try {
@@ -35,8 +35,8 @@ public class PatientClient implements Runnable {
 			    //if message is null, repeat 
 			    while(message==null) {
 			    	   //TODO: Create a thread here, instead of running many windows
-					IHospital hospital = (IHospital) Naming.lookup(url);
-					message = hospital.addPatient(patientName,processingTime);
+					LoadBalancer balancer = (LoadBalancer) Naming.lookup(url);
+					message = balancer.processRequest(ID,processingTime);
 						
 					LOGGER.setLevel(Level.INFO);
 					LOGGER.info(message);

@@ -8,10 +8,10 @@ import java.util.logging.Logger;
 
 /**
  * @author QuyLD
- * Both implement IHospital and Register Naming registry
+ * Both implement IServer and Register Naming registry
  */
-public class HospitalServer  extends java.rmi.server.UnicastRemoteObject 
-implements IHospital,Runnable {
+public class Server  extends java.rmi.server.UnicastRemoteObject
+implements IServer, Runnable {
 
 	/**
 	 * 
@@ -19,34 +19,32 @@ implements IHospital,Runnable {
 	private static final long serialVersionUID = 1L;
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
-	private IHospitalBalancer balancer;
+	private LoadBalancer balancer;
 	private  boolean isAvailable = true;
-	private String hospitalID;
+	private String ID;
 	private int priority = -1;
 	private String BalancerIP;
 	private int registryport = 1099;
 	
 	//TODO: declare a queue to accept request
 	
-	//default constructorf
-	protected HospitalServer() throws RemoteException {
+	//default constructor
+	protected Server() throws RemoteException {
 		super();
 		
 	}
 	
-	public HospitalServer(String balancerip, int _registryport,String hospitalName, int _priority)  throws RemoteException, MalformedURLException, NotBoundException{
+	public Server(String balancerip, int _registryport,String ID, int _priority)  throws RemoteException, MalformedURLException, NotBoundException{
 		this.BalancerIP = balancerip;
 		this.registryport = _registryport;
-		this.hospitalID = hospitalName;
+		this.ID = ID;
 		this.priority = _priority;
        
         
 	}
-	@Override
 	public boolean isAvailable(  ) { return isAvailable;}
-	 
-	@Override
-	public  String addPatient(String patientName, int seconds) throws RemoteException {
+
+	public synchronized String addPatient(String patientName, int seconds) throws RemoteException {
 		
 		try {
 			isAvailable = false;
@@ -60,28 +58,11 @@ implements IHospital,Runnable {
 		isAvailable = true;
 		return "Patient :" + patientName + " is treated successfully !";
 	}
-	
-	/*
-	public static void main(String []args) {
-		try {
-			//get user input
-			String serverName = args[0];
-			int priority = Integer.parseInt(args[1]);
-			new HospitalServer("localhost", 1099,serverName,priority);
-		} catch (RemoteException | MalformedURLException | NotBoundException e) {
-			
-			e.printStackTrace();
-		}
-	}
-	*/
 
-	@Override
-	public String getHospitalID() throws RemoteException {
-		
-		return this.hospitalID;
+	public String getID() throws RemoteException {
+		return this.ID;
 	}
 
-	@Override
 	public int getPriority() throws RemoteException {
 		return this.priority;
 	}
@@ -93,14 +74,14 @@ implements IHospital,Runnable {
 			if ( System.getSecurityManager() == null ) {
 			
 				
-			    System.setProperty("java.security.policy", System.class.getResource("/java.policy").toString());
+			    System.setProperty("java.security.policy", System.class.getResource("/resources/java.policy").toString());
 			    System.setSecurityManager( new SecurityManager() );
 			}
 
-			this.balancer = (IHospitalBalancer) Naming.lookup("rmi://" + BalancerIP + ":" + registryport + "/HospitalBalancer");
-			this.balancer.RegisterHospitalServer(this);
+			this.balancer = (LoadBalancer) Naming.lookup("rmi://" + BalancerIP + ":" + registryport + "/LoadBalancer");
+			this.balancer.RegisterServer((Server) this);
 			LOGGER.setLevel(Level.INFO);
-			LOGGER.info("Hospital :" + hospitalID+ " is available:");
+			LOGGER.info("Server :" + ID + " is available:");
 			
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
