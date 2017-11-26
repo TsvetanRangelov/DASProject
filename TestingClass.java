@@ -1,60 +1,34 @@
-
+import java.util.Random;
+import java.lang.Math;
 
 public class TestingClass    {
 	
 	public static void main(String[] args) {
 		 
 		try {
-			String typeProgram = "";
-			if (args.length > 0)
-				typeProgram = args[0].toString();
+			SimplePriorityBalancer balancer = new SimplePriorityBalancer(1099);
+			new Thread(balancer).start();
+			Thread.sleep(5000);
 
-			if ("Balancer".equals(typeProgram)) {
-				new SimplePriorityBalancer(1099);
+			String [] hospitalName = {"Glasgow","Edinburgh","London"};
+			int [] speed = {2,4,6};
+			int [] caps = {10, 10, 10};
+			Server hospital = null;
+			for (int i = 0; i < speed.length; i++) {
+				hospital = new Server("127.0.0.1", 1099, hospitalName[i], speed[i], caps[i]);
+				new Thread(hospital).start();
 			}
-			
-			else if ("Server".equals(typeProgram)) {
-				String [] hospitalName = {"Glasgow","Edinburgh","London"};
-				int [] priority = {10,20,30};
-				Server hospital = null;
-				for (int i = 0; i < priority.length; i++) {
-					hospital = new Server("127.0.0.1", 1099, hospitalName[i], priority[i]);
-					new Thread(hospital).start();
-				}
-			}
-			
-		
-			else if ("Client".equals(typeProgram)) {
-				//String [] pName = {"John","Beckham","David","Terry","Simeone","Alan","York"};
-				//int [] processTime = {10,20,30,40,20,30,50};
-				Request request = null;
-				for (int i = 0; i < 100; i++) {
-					request = new Request("Patient " + i, "127.0.0.1", 1099, i+5);
-					new Thread(request).start();
-				}
+			Thread.sleep(5000);
+
+			Random random = new Random();
+			System.out.println("Creating requests");
+			for (int i = 0; i < 1000; i++) {
+				int reqTime = (int) Math.ceil(Math.abs(random.nextGaussian()*1000));
+				int waitTime = (int) Math.ceil(Math.abs(random.nextGaussian()*100));
+				new Request("Patient " + i, "127.0.0.1", 1099, reqTime);
+				Thread.sleep(waitTime);
 			}
 
-			else {
-				new SimplePriorityBalancer(1099);
-
-				Thread.sleep(5000);
-				String [] hospitalName = {"Glasgow","Edinburgh","London"};
-				int [] priority = {10,20,30};
-				Server hospital = null;
-				for (int i = 0; i < priority.length; i++) {
-					hospital = new Server("127.0.0.1", 1099, hospitalName[i], priority[i]);
-					new Thread(hospital).start();
-				}
-
-				Thread.sleep(5000);
-				Request client = null;
-				for (int i = 0; i < 100; i++) {
-					client = new Request("Patient " + i, "127.0.0.1", 1099, 1);
-					new Thread(client).start();
-				}
-			}
-		
-			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -7,59 +7,39 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-public class Request implements Runnable {
-           
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-    
+public class Request extends java.rmi.server.UnicastRemoteObject implements IRequest {
+
 	private String ID;
 	private String toIP;
 	private int toPort = 1099;
 	private String url = null;
 	private int processingTime = 0;
-	public Request(String ID, String _toIP, int port, int _pTime) {
+	private LoadBalancer balancer;
+	public Request(String ID, String _toIP, int port, int _pTime) throws RemoteException {
 		this.ID = ID;
 		this.toIP = _toIP;
 		this.toPort = port;
-		url = "rmi://" + toIP + ":" + toPort + "/LoadBalancer";
+		url = String.format("rmi://%s:%d/LoadBalancer", toIP, toPort);
 		this.processingTime = _pTime;
-	}
-	
-	@Override
-	public void run() {
+
 		if ( System.getSecurityManager() == null ) {
 			System.setProperty("java.security.policy", System.class.getResource("/resources/java.policy").toString());
 			System.setSecurityManager( new SecurityManager() );
 		}
 		try {
-			    String message = null;
-			    //if message is null, repeat 
-			    while(message==null) {
-			    	   //TODO: Create a thread here, instead of running many windows
-					LoadBalancer balancer = (LoadBalancer) Naming.lookup(url);
-					message = balancer.processRequest(ID,processingTime);
-						
-					LOGGER.setLevel(Level.INFO);
-					LOGGER.info(message);
-					
-					Thread.sleep(5000);
-				
-			    }
-			 
-			
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NotBoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
+			this.balancer = (LoadBalancer) Naming.lookup(url);
+			this.balancer.addRequest(this);
+		}
+		catch (RemoteException|NotBoundException|MalformedURLException e) {
 			e.printStackTrace();
 		}
-		
 	}
 
+	public int getProcessingTime() throws RemoteException {
+		return processingTime;
+	}
+
+	public String getID() throws RemoteException {
+		return ID;
+	}
 }

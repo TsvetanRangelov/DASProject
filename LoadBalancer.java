@@ -9,5 +9,5 @@ public interface LoadBalancer extends Remote {
 
 	public void RegisterServer(IServer server) throws RemoteException;
 	public void UnregisterServer(IServer server) throws RemoteException;
-	public String processRequest(String patientName, int processedTime) throws RemoteException;
+	public void addRequest(IRequest request) throws RemoteException;
 }
