@@ -10,16 +10,17 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-public class SimplePriorityBalancer extends UnicastRemoteObject implements LoadBalancer, Runnable {
+public class DynamicSimpleRRBalancer extends UnicastRemoteObject implements LoadBalancer, Runnable {
 
 	private List<IServer> servers = null;
 	private ConcurrentLinkedQueue<IRequest> requests = null;
+	private boolean serversStarted = false;
 
-	protected SimplePriorityBalancer() throws RemoteException {
+	protected DynamicSimpleRRBalancer() throws RemoteException {
 		super();
 	}
 
-	public SimplePriorityBalancer(int port) throws RemoteException,IOException {
+	public DynamicSimpleRRBalancer(int port) throws RemoteException,IOException {
 		this.servers = new ArrayList<>();
 		this.requests = new ConcurrentLinkedQueue<>();
 		if (System.getSecurityManager() == null) {
@@ -40,6 +41,7 @@ public class SimplePriorityBalancer extends UnicastRemoteObject implements LoadB
 	@Override
 	public void RegisterServer(IServer server) throws RemoteException {
 		servers.add(server);
+		serversStarted = true;
 	}
 
 	@Override
@@ -51,10 +53,14 @@ public class SimplePriorityBalancer extends UnicastRemoteObject implements LoadB
 		requests.add(request);
 	}
 
+	public void changeWeight(IServer server) throws RemoteException {
+		return;
+	}
+
 	@Override
 	public void run() {
 		int serverTurn = 0;
-		while (true) {
+		while (servers.size() > 0 || !serversStarted) {
 			if (!requests.isEmpty()) {
 				if (serverTurn >= servers.size())
 					serverTurn = serverTurn % servers.size();
@@ -65,13 +71,14 @@ public class SimplePriorityBalancer extends UnicastRemoteObject implements LoadB
 						requests.poll();
 						servers.get(serverTurn).addPatient(curRequest);
 					}
-					else
-						System.out.printf("Server %s at full capacity, cannot store %s\n", curServer.getID(), curRequest.getID());
+//					else
+//						System.out.printf("Server %s at full capacity, cannot store %s\n", curServer.getID(), curRequest.getID());
 				} catch (RemoteException e) {
 					e.printStackTrace();
 				}
 				serverTurn++;
 			}
 		}
+		System.out.println("Load balancer shutting down");
 	}
 }

@@ -6,12 +6,20 @@ public class TestingClass    {
 	public static void main(String[] args) {
 		 
 		try {
-			SimplePriorityBalancer balancer = new SimplePriorityBalancer(1099);
-			new Thread(balancer).start();
-			Thread.sleep(5000);
-
+			switch (args[0]) {
+				case "wrr":
+					DynamicWeightedRRBalancer dwrrb = new DynamicWeightedRRBalancer(1099);
+					new Thread(dwrrb).start();
+					Thread.sleep(5000);
+					break;
+				default:
+					DynamicSimpleRRBalancer dsrrb = new DynamicSimpleRRBalancer(1099);
+					new Thread(dsrrb).start();
+					Thread.sleep(5000);
+					break;
+			}
 			String [] hospitalName = {"Glasgow","Edinburgh","London"};
-			int [] speed = {2,4,6};
+			int [] speed = {2, 4, 6};
 			int [] caps = {10, 10, 10};
 			Server hospital = null;
 			for (int i = 0; i < speed.length; i++) {
@@ -30,7 +38,6 @@ public class TestingClass    {
 			}
 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
