@@ -15,6 +15,10 @@ public class TestingClass    {
 					DynamicWeightedRRBalancer dpb = new DynamicWeightedRRBalancer(1099);
 					new Thread(dpb).start();
 					break;
+				case "q":
+					WrapperQuasiBalancer wqb = new WrapperQuasiBalancer(1099);
+					new Thread(wqb).start();
+					break;
 				default:
 					DynamicSimpleRRBalancer dsrrb = new DynamicSimpleRRBalancer(1099);
 					new Thread(dsrrb).start();
@@ -37,7 +41,8 @@ public class TestingClass    {
 			for (int i = 0; i < 1000; i++) {
 				int reqTime = (int) Math.ceil(Math.abs(random.nextGaussian()*1000));
 				int waitTime = (int) Math.ceil(Math.abs(random.nextGaussian()*100));
-				new Request("Patient " + i, "127.0.0.1", 1099, reqTime);
+				int priority = (int) Math.ceil(Math.abs(random.nextGaussian()*5))+1;
+				new Request("Patient " + i, "127.0.0.1", 1099, reqTime, priority);
 				Thread.sleep(waitTime);
 			}
 

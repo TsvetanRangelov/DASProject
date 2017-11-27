@@ -15,12 +15,14 @@ public class Request extends java.rmi.server.UnicastRemoteObject implements IReq
 	private String url = null;
 	private int processingTime = 0;
 	private LoadBalancer balancer;
-	public Request(String ID, String _toIP, int port, int _pTime) throws RemoteException {
+	private int priority;
+	public Request(String ID, String _toIP, int port, int _pTime, int priority) throws RemoteException {
 		this.ID = ID;
 		this.toIP = _toIP;
 		this.toPort = port;
 		url = String.format("rmi://%s:%d/LoadBalancer", toIP, toPort);
 		this.processingTime = _pTime;
+		this.priority=Math.min(priority, 10);
 
 		if ( System.getSecurityManager() == null ) {
 			System.setProperty("java.security.policy", System.class.getResource("/resources/java.policy").toString());
@@ -41,5 +43,10 @@ public class Request extends java.rmi.server.UnicastRemoteObject implements IReq
 
 	public String getID() throws RemoteException {
 		return ID;
+	}
+
+	@Override
+	public int getPriority() throws RemoteException {
+		return priority;
 	}
 }
