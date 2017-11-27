@@ -1,6 +1,7 @@
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
@@ -10,11 +11,35 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.TreeSet;
 import java.util.Comparator;
+import java.util.HashMap;
 
 public class DynamicPriorityBalancer extends UnicastRemoteObject implements LoadBalancer, Runnable {
 
-	private List<IServer> servers = null;
-	private TreeSet<IServer> serverPriorities = null;
+	private class ServerHelper {
+		private String ID;
+		private int speed;
+
+		public ServerHelper(String ID, int speed) {
+			this.ID = ID;
+			this.speed = speed;
+		}
+
+		public String getID() {
+			return ID;
+		}
+
+		public int getSpeed() {
+			return speed;
+		}
+
+		public void setSpeed(int s) {
+			speed = s;
+		}
+	}
+
+	private List<String> servers = null;
+	private TreeSet<ServerHelper> serverPriorities = null;
+	private HashMap<String, ServerHelper> IDToHelper = null;
 	private ConcurrentLinkedQueue<IRequest> requests = null;
 	private boolean serversStarted = false;
 
@@ -25,16 +50,11 @@ public class DynamicPriorityBalancer extends UnicastRemoteObject implements Load
 	public DynamicPriorityBalancer(int port) throws RemoteException,IOException {
 		this.servers = new ArrayList<>();
 		this.requests = new ConcurrentLinkedQueue<>();
-		Comparator<IServer> serverComparator = new Comparator<IServer>() {
+		this.IDToHelper = new HashMap<>();
+		Comparator<ServerHelper> serverComparator = new Comparator<ServerHelper>() {
 			@Override
-			public int compare(IServer a, IServer b) {
-				try {
-					return a.getProcessingSpeed() - b.getProcessingSpeed();
-				}
-				catch (RemoteException e) {
-					e.printStackTrace();
-				}
-				return 0;
+			public int compare(ServerHelper a, ServerHelper b) {
+				return b.getSpeed() - a.getSpeed();
 			}
 		};
 		this.serverPriorities = new TreeSet<>(serverComparator);
@@ -55,15 +75,21 @@ public class DynamicPriorityBalancer extends UnicastRemoteObject implements Load
 
 	@Override
 	public void RegisterServer(IServer server) throws RemoteException {
-		servers.add(server);
-		serverPriorities.add(server);
+		String sID = server.getID();
+		servers.add(sID);
+		ServerHelper sh = new ServerHelper(server.getID(), server.getProcessingSpeed());
+		serverPriorities.add(sh);
+		IDToHelper.put(sID, sh);
 		serversStarted = true;
 	}
 
 	@Override
 	public synchronized void UnregisterServer(IServer server) throws RemoteException {
-		servers.remove(server);
-		serverPriorities.remove(server);
+		String sID = server.getID();
+		servers.remove(sID);
+		ServerHelper toBeRemoved = IDToHelper.get(sID);
+		serverPriorities.remove(toBeRemoved);
+		IDToHelper.remove(sID);
 	}
 
 	public void addRequest(IRequest request) throws RemoteException {
@@ -71,8 +97,10 @@ public class DynamicPriorityBalancer extends UnicastRemoteObject implements Load
 	}
 
 	public void changeWeight(IServer server) throws RemoteException {
-		serverPriorities.remove(server);
-		serverPriorities.add(server);
+		ServerHelper toBeChanged = IDToHelper.get(server.getID());
+		serverPriorities.remove(toBeChanged);
+		toBeChanged.setSpeed(server.getProcessingSpeed());
+		serverPriorities.add(toBeChanged);
 	}
 
 	@Override
@@ -81,22 +109,23 @@ public class DynamicPriorityBalancer extends UnicastRemoteObject implements Load
 			if (!requests.isEmpty()) {
 				try {
 					IServer curServer = null;
-					for (IServer s : serverPriorities) {
-						if (s.isAvailable()){
-							curServer = s;
+					for (ServerHelper s : serverPriorities) {
+						String curServerURL = String.format("rmi://localhost:1099/%s", s.getID());
+						IServer tempServer = (IServer) Naming.lookup(curServerURL);
+						if (tempServer.isAvailable()){
+							curServer = tempServer;
 							break;
 						}
 					}
-					IRequest curRequest = requests.peek();
 					if (curServer != null) {
-						requests.poll();
+						IRequest curRequest = requests.poll();
 						curServer.addPatient(curRequest);
 					}
 					else {
 						Thread.sleep(50);
 //						System.out.printf("Server %s at full capacity, cannot store %s\n", curServer.getID(), curRequest.getID());
 					}
-				} catch (RemoteException|InterruptedException e) {
+				} catch (NotBoundException|MalformedURLException|RemoteException|InterruptedException e) {
 					e.printStackTrace();
 				}
 			}

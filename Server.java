@@ -20,6 +20,7 @@ public class Server extends java.rmi.server.UnicastRemoteObject implements IServ
 	private int totalRequestsProcessed = 0;
 	private int totalProcessingTime = 0;
 	private int totalUptime = 0;
+	private int uptimeBeforeFirstRequest = 0;
 	private int totalDynamicDowntime = 0;
 	private int capacity = 1;
 	private ConcurrentLinkedQueue<IRequest> requests = null;
@@ -36,6 +37,21 @@ public class Server extends java.rmi.server.UnicastRemoteObject implements IServ
 		this.processingSpeed = speed;
        	this.requests = new ConcurrentLinkedQueue<>();
         this.capacity = capacity;
+
+		if (System.getSecurityManager() == null) {
+			System.class.getResource("/resources/java.policy").toString();
+			System.setProperty("java.security.policy", System.class.getResource("/resources/java.policy").toString());
+			System.setSecurityManager(new SecurityManager());
+		}
+		try {
+			String url = String.format("rmi://localhost:%d/%s", registryport, ID);
+			System.out.println(url);
+			Naming.rebind(url, this);
+			System.out.printf("Establishing server %s successfully\n", ID);
+
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -153,8 +169,10 @@ public class Server extends java.rmi.server.UnicastRemoteObject implements IServ
 					Thread.sleep(100);
 					if (totalProcessingTime > 0)
 						totalUptime += 100;
+					else
+						uptimeBeforeFirstRequest += 100;
 				}
-				if (totalUptime > 100000)
+				if (totalUptime > 100000 || uptimeBeforeFirstRequest > 150000)
 					break;
 			}
 			System.out.printf("Server %s total working time %d, uptime %d, downtime %d, total processed %d\n", ID, totalProcessingTime, totalUptime, totalDynamicDowntime, totalRequestsProcessed);

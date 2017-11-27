@@ -12,7 +12,7 @@ public class TestingClass    {
 					new Thread(dwrrb).start();
 					break;
 				case "p":
-					DynamicWeightedRRBalancer dpb = new DynamicWeightedRRBalancer(1099);
+					DynamicPriorityBalancer dpb = new DynamicPriorityBalancer(1099);
 					new Thread(dpb).start();
 					break;
 				case "q":

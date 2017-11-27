@@ -1,6 +1,7 @@
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ import java.util.logging.Logger;
 
 public class DynamicSimpleRRBalancer extends UnicastRemoteObject implements LoadBalancer, Runnable {
 
-	private List<IServer> servers = null;
+	private List<String> servers = null;
 	private ConcurrentLinkedQueue<IRequest> requests = null;
 	private boolean serversStarted = false;
 
@@ -40,13 +41,13 @@ public class DynamicSimpleRRBalancer extends UnicastRemoteObject implements Load
 
 	@Override
 	public void RegisterServer(IServer server) throws RemoteException {
-		servers.add(server);
+		servers.add(server.getID());
 		serversStarted = true;
 	}
 
 	@Override
 	public synchronized void UnregisterServer(IServer server) throws RemoteException {
-		servers.remove(server);
+		servers.remove(server.getID());
 	}
 
 	public void addRequest(IRequest request) throws RemoteException {
@@ -64,21 +65,25 @@ public class DynamicSimpleRRBalancer extends UnicastRemoteObject implements Load
 			if (!requests.isEmpty()) {
 				if (serverTurn >= servers.size())
 					serverTurn = serverTurn % servers.size();
-				IServer curServer = servers.get(serverTurn);
-				IRequest curRequest = requests.peek();
-				try {
-					if (curServer.isAvailable()) {
-						requests.poll();
-						servers.get(serverTurn).addPatient(curRequest);
+				// Currently, all servers are stored locally, so have same IP/port
+				String curServerURL = String.format("rmi://localhost:1099/%s", servers.get(serverTurn));
+						try {
+							IServer curServer = (IServer) Naming.lookup(curServerURL);
+							IRequest curRequest = requests.peek();
+							if (curServer.isAvailable()) {
+								requests.poll();
+						curServer.addPatient(curRequest);
 					}
 //					else
 //						System.out.printf("Server %s at full capacity, cannot store %s\n", curServer.getID(), curRequest.getID());
-				} catch (RemoteException e) {
+				}
+				catch (NotBoundException|MalformedURLException|RemoteException e){
 					e.printStackTrace();
 				}
 				serverTurn++;
 			}
 		}
 		System.out.println("Load balancer shutting down");
+
 	}
 }

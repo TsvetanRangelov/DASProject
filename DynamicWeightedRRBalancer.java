@@ -1,6 +1,7 @@
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
@@ -13,9 +14,9 @@ import java.math.BigInteger;
 
 public class DynamicWeightedRRBalancer extends UnicastRemoteObject implements LoadBalancer, Runnable {
 
-	private List<IServer> servers = null;
+	private List<String> servers = null;
 	private List<Integer> weights;
-	private HashMap<IServer, Integer> serverIndexMap;
+	private HashMap<String, Integer> serverIndexMap;
 	private ConcurrentLinkedQueue<IRequest> requests = null;
 	private int stepSize = 0;
 	private boolean serversStarted = false;
@@ -60,10 +61,10 @@ public class DynamicWeightedRRBalancer extends UnicastRemoteObject implements Lo
 
 	@Override
 	public void RegisterServer(IServer server) throws RemoteException {
-		servers.add(server);
+		servers.add(server.getID());
 		weights.add(server.getProcessingSpeed());
 		//Map the server to its index in the array for dynamic capacity changes
-		serverIndexMap.put(server, servers.size() - 1);
+		serverIndexMap.put(server.getID(), servers.size() - 1);
 		if (servers.size() == 1)
 			stepSize = server.getProcessingSpeed();
 		else
@@ -73,10 +74,10 @@ public class DynamicWeightedRRBalancer extends UnicastRemoteObject implements Lo
 
 	@Override
 	public synchronized void UnregisterServer(IServer server) throws RemoteException {
-		servers.remove(server);
-		int index = serverIndexMap.get(server);
+		servers.remove(server.getID());
+		int index = serverIndexMap.get(server.getID());
 		weights.set(index, -1);
-		serverIndexMap.remove(server);
+		serverIndexMap.remove(server.getID());
 	}
 
 	public void addRequest(IRequest request) throws RemoteException {
@@ -98,18 +99,19 @@ public class DynamicWeightedRRBalancer extends UnicastRemoteObject implements Lo
 //				System.out.println(curServerWeight);
 				if (serverTurn >= servers.size())
 					serverTurn = serverTurn % servers.size();
-				IServer curServer = servers.get(serverTurn);
-				IRequest curRequest = requests.peek();
+				String curServerURL = String.format("rmi://localhost:1099/%s", servers.get(serverTurn));
 				try {
+					IServer curServer = (IServer) Naming.lookup(curServerURL);
+					IRequest curRequest = requests.peek();
 					if (curServer.isAvailable()) {
 						requests.poll();
-						servers.get(serverTurn).addPatient(curRequest);
+						curServer.addPatient(curRequest);
 					}
 					else {
 //						System.out.printf("Server %s at full capacity, cannot store %s\n", curServer.getID(), curRequest.getID());
 						curServerWeight = Integer.MIN_VALUE;
 					}
-				} catch (RemoteException e) {
+				} catch (NotBoundException|MalformedURLException|RemoteException e) {
 					e.printStackTrace();
 				}
 				curServerWeight += stepSize;
