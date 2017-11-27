@@ -10,14 +10,18 @@ public class TestingClass    {
 				case "wrr":
 					DynamicWeightedRRBalancer dwrrb = new DynamicWeightedRRBalancer(1099);
 					new Thread(dwrrb).start();
-					Thread.sleep(5000);
+					break;
+				case "p":
+					DynamicWeightedRRBalancer dpb = new DynamicWeightedRRBalancer(1099);
+					new Thread(dpb).start();
 					break;
 				default:
 					DynamicSimpleRRBalancer dsrrb = new DynamicSimpleRRBalancer(1099);
 					new Thread(dsrrb).start();
-					Thread.sleep(5000);
 					break;
 			}
+			Thread.sleep(5000);
+
 			String [] hospitalName = {"Glasgow","Edinburgh","London"};
 			int [] speed = {2, 4, 6};
 			int [] caps = {10, 10, 10};

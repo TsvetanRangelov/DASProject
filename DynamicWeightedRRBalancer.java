@@ -74,6 +74,9 @@ public class DynamicWeightedRRBalancer extends UnicastRemoteObject implements Lo
 	@Override
 	public synchronized void UnregisterServer(IServer server) throws RemoteException {
 		servers.remove(server);
+		int index = serverIndexMap.get(server);
+		weights.set(index, -1);
+		serverIndexMap.remove(server);
 	}
 
 	public void addRequest(IRequest request) throws RemoteException {
