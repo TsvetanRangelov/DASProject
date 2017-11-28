@@ -1,3 +1,4 @@
+package Static;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.rmi.Naming;

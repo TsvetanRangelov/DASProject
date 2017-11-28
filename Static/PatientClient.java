@@ -1,4 +1,4 @@
-
+package Static;
 import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.rmi.Naming;

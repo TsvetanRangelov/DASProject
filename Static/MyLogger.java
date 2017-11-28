@@ -1,3 +1,4 @@
+package Static;
 import java.io.IOException;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.FileHandler;

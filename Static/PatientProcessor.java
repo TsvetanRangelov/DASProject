@@ -1,3 +1,4 @@
+package Static;
 public class PatientProcessor implements Runnable {
 
 	private PatientClient client = null;

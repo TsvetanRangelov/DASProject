@@ -1,4 +1,4 @@
-
+package Static;
 
 public class TestingClass    {
 	

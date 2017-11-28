@@ -1,6 +1,5 @@
-/**
- * 
- */
+package Static;
+
 
 
 import java.rmi.Remote;
