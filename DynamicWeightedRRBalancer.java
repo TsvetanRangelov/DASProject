@@ -85,7 +85,7 @@ public class DynamicWeightedRRBalancer extends UnicastRemoteObject implements Lo
 	}
 
 	public void changeWeight(IServer server) throws RemoteException {
-		int index = serverIndexMap.get(server);
+		int index = serverIndexMap.get(server.getID());
 		weights.set(index, server.getProcessingSpeed());
 		calculateStepSize();
 	}
