@@ -1,5 +1,5 @@
-import java.util.Random;
-import java.lang.Math;
+import java.io.FileReader;
+import java.io.BufferedReader;
 
 public class TestingClass    {
 	
@@ -37,13 +37,14 @@ public class TestingClass    {
 			Thread.sleep(5000);
 
 			Random random = new Random();
+			FileReader file = FileReader("requests.csv");
+			BufferedReader in = new BufferedReader(file);
 			System.out.println("Creating requests");
-			for (int i = 0; i < 1000; i++) {
-				int reqTime = (int) Math.ceil(Math.abs(random.nextGaussian()*1000));
-				int waitTime = (int) Math.ceil(Math.abs(random.nextGaussian()*100));
-				int priority = (int) Math.ceil(Math.abs(random.nextGaussian()*5))+1;
-				new Request("Patient " + i, "127.0.0.1", 1099, reqTime, priority);
-				Thread.sleep(waitTime);
+			String line;
+			while ((line = in.readLine())!=null){
+				String[] data = line.split(',');
+				new Request("Patient " + i, "127.0.0.1", 1099, Integer.parseInt(data[0]), Integer.parseInt(data[2]));
+				Thread.sleep(Integer.parseInt(data[1]));
 			}
 
 		} catch (Exception e) {
