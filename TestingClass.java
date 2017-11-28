@@ -36,15 +36,16 @@ public class TestingClass    {
 			}
 			Thread.sleep(5000);
 
-			Random random = new Random();
-			FileReader file = FileReader("requests.csv");
+			FileReader file = new FileReader("requests.csv");
 			BufferedReader in = new BufferedReader(file);
 			System.out.println("Creating requests");
 			String line;
+			int i = 0;
 			while ((line = in.readLine())!=null){
-				String[] data = line.split(',');
-				new Request("Patient " + i, "127.0.0.1", 1099, Integer.parseInt(data[0]), Integer.parseInt(data[2]));
+				String[] data = line.split(",");
+				new Request("Request " + i, "127.0.0.1", 1099, Integer.parseInt(data[0]), Integer.parseInt(data[2]));
 				Thread.sleep(Integer.parseInt(data[1]));
+				i++;
 			}
 
 		} catch (Exception e) {
