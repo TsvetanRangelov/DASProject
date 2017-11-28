@@ -13,6 +13,7 @@ public class QuasiBalancer extends UnicastRemoteObject{
 
 	private static final long serialVersionUID = 1L;
 	private HashMap<Integer,BlockingQueue<UnknownServer>> priorityTable;
+	private ArrayList<UnknownServer> serverList;
 	private ArrayList<Float> frequencyTable;
 	private ArrayList<Float> speedTable;
 	private WrapperQuasiBalancer parent;
@@ -22,6 +23,7 @@ public class QuasiBalancer extends UnicastRemoteObject{
 		//0 stores unallocated servers
 		priorityTable = new HashMap<Integer, BlockingQueue<UnknownServer>>();
 		this.frequencyTable = new ArrayList<Float>();
+		this.serverList = new ArrayList<UnknownServer>();
 		this.speedTable = new ArrayList<Float>();
 		for(int i=0;i<11;++i) {
 			speedTable.add((float) 0);
@@ -46,9 +48,16 @@ public class QuasiBalancer extends UnicastRemoteObject{
 		}
 
 	}
-
+	
+	
 	public void addServer(String id) throws RemoteException {
 		try {
+			for(UnknownServer s: serverList) {
+				if(s.id==id) {
+					insertServer(s);
+					break;
+				}
+			}
 			insertServer(new UnknownServer(id));
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
@@ -59,14 +68,24 @@ public class QuasiBalancer extends UnicastRemoteObject{
 
 	
 	public String processRequest(int priority, String requestID) throws RemoteException {
+		if(priority == -1) {
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			return processRequest(10,requestID);
+		}
+		//priorityTable.forEach((k,v) -> System.out.println("key: "+k+" value:"+v.size()));
 		frequencyTable.set(priority,frequencyTable.get(priority)+1);
 		try {
 			UnknownServer server = priorityTable.get(priority).poll();
 			speedTable.set(priority,speedTable.get(priority)-server.speed);
 			float startTime = System.nanoTime();
-			parent.dispatch(requestID, server.id);
+			boolean busy = parent.dispatch(requestID, server.id);
 			float endTime = System.nanoTime();
 			server.updateSpeed(endTime - startTime);
+			if(!busy)
 			insertServer(server);
 			
 		}catch(Exception e) {
@@ -78,11 +97,14 @@ public class QuasiBalancer extends UnicastRemoteObject{
 
 
 	private void insertServer(UnknownServer server) throws InterruptedException {
+		System.out.println("Inserting server"+server.id);
 		for(int i = 1; i<10;++i) {
 			synchronized(priorityTable){
 				if(priorityTable.get(i).peek()==null) {
 					speedTable.set(i,speedTable.get(i)+server.speed);
+					System.out.println("Inserting server"+server.id+"at "+ i);
 					priorityTable.get(i).put(server);
+					break;
 				}
 				if(getAverageRatio()<speedTable.get(i)/frequencyTable.get(i)) {
 					speedTable.set(i,speedTable.get(i)+server.speed);
@@ -120,7 +142,14 @@ public class QuasiBalancer extends UnicastRemoteObject{
 			speed=(speed*totalCalls+duration)/(totalCalls+1);
 			totalCalls++;
 		}
-
+		
+		@Override
+		public boolean equals(Object o) {
+			
+			return id==((UnknownServer)o).id;
+			
+		}
+		
 		@Override
 		public int compareTo(UnknownServer server) {
 			return (int)(this.speed-server.getSpeed());
@@ -130,5 +159,8 @@ public class QuasiBalancer extends UnicastRemoteObject{
 			return speed;
 		}
 	}
+
+
+
 	
 }

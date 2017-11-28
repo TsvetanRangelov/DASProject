@@ -1,12 +1,9 @@
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
-import java.rmi.Remote;
 import java.rmi.RemoteException;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 
 public class Server extends java.rmi.server.UnicastRemoteObject implements IServer, Runnable {
@@ -160,6 +157,9 @@ public class Server extends java.rmi.server.UnicastRemoteObject implements IServ
 					if (this.processRequest(curRequest)) {
 						requests.poll();
 						isAvailable = true;
+						if(this.balancer.getClass()==WrapperQuasiBalancer.class) {
+							((WrapperQuasiBalancer)this.balancer).RegisterServer(this);
+						}
 						this.randomDynamicEffect();
 //						System.out.printf("Server %s processed %s with processing time %d, total processed %d\n", ID, curRequest.getID(), curRequest.getProcessingTime(), totalRequestsProcessed);
 //						System.out.printf("Total server %s processing time: %d/(%d + %d)\n", ID, totalProcessingTime, totalUptime, totalDynamicDowntime);

@@ -20,6 +20,7 @@ public class WrapperQuasiBalancer extends UnicastRemoteObject implements LoadBal
 
 	private HashMap<String, IServer> servers = null;
 	private HashMap<String, IRequest> requests = null;
+	private HashMap<String, IServer> busyServers= null;
 
 	protected WrapperQuasiBalancer() throws RemoteException {
 		super();
@@ -28,6 +29,7 @@ public class WrapperQuasiBalancer extends UnicastRemoteObject implements LoadBal
 	public WrapperQuasiBalancer(int port) throws RemoteException,IOException {
 		this.QuasiBalancer = new QuasiBalancer(port, this);
 		this.servers = new HashMap<String, IServer>();
+		this.busyServers = new HashMap<String, IServer>();
 		this.requests = new HashMap<String, IRequest>();
 		MyLogger.setup();
 		if (System.getSecurityManager() == null) {
@@ -44,16 +46,12 @@ public class WrapperQuasiBalancer extends UnicastRemoteObject implements LoadBal
 			System.out.println("Establishing wrapper balancer successfully");
 
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 	}
 
-	/*
-	 * Weighted Round robin 1. Check server available or not 2. If there are more
-	 * than 2 server avaialble, request will be redirected to server which has higher priority
-	 */
+	
 	public void addRequest(IRequest request) throws RemoteException {
 		requests.put(request.getID(), request);
 		QuasiBalancer.processRequest(request.getPriority(),request.getID());
@@ -62,7 +60,7 @@ public class WrapperQuasiBalancer extends UnicastRemoteObject implements LoadBal
 	@Override
 	public void RegisterServer(IServer server) throws RemoteException {
 		synchronized(servers) {	//Is synchronized so that the logs are always properly reflect the order of events
-			servers.put(server.getID(),server);
+			if(!servers.containsKey(server.getID())) servers.put(server.getID(),server);
 			QuasiBalancer.addServer(server.getID());
 		}
 	}
@@ -71,16 +69,16 @@ public class WrapperQuasiBalancer extends UnicastRemoteObject implements LoadBal
 	public void UnregisterServer(IServer server) throws RemoteException {
 		synchronized (servers) {
 			servers.remove(server.getID());
-			LOGGER.setLevel(Level.INFO);
-			LOGGER.info("Remove server " + server.getID() + " from registry");
-			
 		}
 	}
 
-	public void dispatch(String requestID, String id) throws RemoteException {
-		System.out.println(id+" "+requestID);
+	public boolean dispatch(String requestID, String id) throws RemoteException {
 		servers.get(id).addPatient(requests.get(requestID));
 		requests.remove(requestID);
+		if(!servers.get(id).isAvailable()) {
+			busyServers.put(id, servers.get(id));
+		}
+		return servers.get(id).isAvailable();
 	}
 
 	@Override
