@@ -6,16 +6,16 @@ public class RequestProcessor implements Runnable {
 		this.client = client;
 	}
 	@Override
-	
+
 	public void run() {
 		try {
-			Thread.sleep(client.getProcessingTime()*1000);
-		
-		
+			Thread.sleep(client.getProcessingTime());
+
+
 		}catch(InterruptedException e) {
-			
+
 		}
-	
-		
+
+
 	}
 }

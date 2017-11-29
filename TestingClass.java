@@ -34,7 +34,7 @@ public class TestingClass    {
 			//SWRR diffrent implementation
 			if ("swrr".equals(args[0])){
 				//create server
-				
+
 				String [] serverName = {"London","Glasgow","Edinburgh"};
 				int [] capacity = {10,5,5};
 				SWRRServer server = null;
@@ -43,17 +43,31 @@ public class TestingClass    {
 					new Thread(server).start();
 				}
 				System.out.println("Server created sucessfully");
-				
-				ClientRequest client = null;
+
+				/*ClientRequest client = null;
 				int numberOfPatients = 20;
 				for (int i = 0; i < numberOfPatients; i++) {
 					client = new ClientRequest("Request " + i, "127.0.0.1", 1099, i+5);
 					new Thread(client).start();
+				}*/
+
+				FileReader file = new FileReader("requests.csv");
+				BufferedReader in = new BufferedReader(file);
+				System.out.println("Creating requests");
+				String line;
+				int i = 0;
+				ClientRequest client = null;
+				while ((line = in.readLine())!=null){
+					String[] data = line.split(",");
+					client = new ClientRequest("Request " + i, "127.0.0.1", 1099, Integer.parseInt(data[0]));
+					new Thread(client).start();
+					i++;
 				}
+
 				System.out.println("Client Request created sucessfully. Check Logging.html file to see what's going on !");
 			}
 			else {
-				
+
 				if(args.length > 1 && args[1].equals("debug")){
 					System.out.println("Servers will be loud.");
 					debug = true;
@@ -91,7 +105,7 @@ public class TestingClass    {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-	
-			
+
+
 	}
 }
