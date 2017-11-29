@@ -11,4 +11,7 @@ public interface IServer extends Remote {
 	boolean isAvailable() throws RemoteException;
     String getID () throws RemoteException;
     int getProcessingSpeed() throws RemoteException;
+    
+   
+    
 }
