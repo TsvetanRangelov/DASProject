@@ -22,11 +22,13 @@ public class Server extends java.rmi.server.UnicastRemoteObject implements IServ
 	private int capacity = 1;
 	private ConcurrentLinkedQueue<IRequest> requests = null;
 
+	private boolean debug = false;
+
 	protected Server() throws RemoteException {
 		super();
-		
+
 	}
-	
+
 	public Server(String balancerip, int _registryport, String ID, int speed, int capacity)  throws RemoteException, MalformedURLException, NotBoundException{
 		this.BalancerIP = balancerip;
 		this.registryport = _registryport;
@@ -73,6 +75,11 @@ public class Server extends java.rmi.server.UnicastRemoteObject implements IServ
 		return processingSpeed;
 	}
 
+	// simple way of turning debug on/off
+	public void toggleDebug() {
+		this.debug = !this.debug;
+	}
+
 	private boolean processRequest(IRequest request) throws RemoteException {
 		int tts = (int) Math.ceil( (double) request.getProcessingTime() / (double) processingSpeed);
 		try {
@@ -108,6 +115,9 @@ public class Server extends java.rmi.server.UnicastRemoteObject implements IServ
 					balancer.addRequest(req);
 				counter++;
 			}
+
+			System.out.println("Total waiting: "+counter);
+
 			requests = remainingReqs;
 		}
 	}
@@ -154,6 +164,9 @@ public class Server extends java.rmi.server.UnicastRemoteObject implements IServ
 			while (true) {
 				if (!requests.isEmpty()) {
 					IRequest curRequest = requests.peek();
+					if(debug){
+						System.out.println(ID + " req "+requests.size()+" proc "+totalRequestsProcessed);
+					}
 					if (this.processRequest(curRequest)) {
 						requests.poll();
 						isAvailable = true;
@@ -184,5 +197,5 @@ public class Server extends java.rmi.server.UnicastRemoteObject implements IServ
 		}
 	}
 
-	
+
 }
