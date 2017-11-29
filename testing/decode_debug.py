@@ -2,6 +2,15 @@ import sys
 import matplotlib.pyplot as plt
 import re
 
+# how to get the output file:
+# 1) pipe output from "Java TestingClass type_of_alg debug" into a txt file
+# 2) make sure to exit after timeout of servers
+# 3) run this python script, and profit!
+
+# example:
+# java TestingClass p debug > p_out.txt
+
+
 file = open(sys.argv[1], "r")
 
 data = file.read().splitlines()
@@ -63,47 +72,51 @@ for line in data:
         else:
             server_speed[server] = {server_tick: start, server_tick+1: end}
 
+styles = ["-","--",":"]
+
 plt.figure(1)
 plt.subplot(111)
-
+count = 0
 for server in server_processed:
     sort = sorted(server_processed[server].items())
     x,y = zip(*sort)
-    plt.plot(x, y, label=server)
-#ax.plot(t,s)
+    plt.plot(x, y, styles[count], label=server)
+    count += 1
 plt.legend(loc="upper left")
 plt.title("Processed requests over time")
 
 plt.figure(2)
 plt.subplot(111)
-
+count = 0
 for server in server_requests:
     sort = sorted(server_requests[server].items())
     x,y = zip(*sort)
-    plt.plot(x, y, label=server)
-#ax.plot(t,s)
+    plt.plot(x, y, styles[count], label=server)
+    count += 1
 plt.legend(loc="upper left")
 plt.title("Waiting requests over time")
 
 plt.figure(3)
 plt.subplot(111)
-
+count = 0
 for server in server_capacity:
     sort = sorted(server_capacity[server].items())
+    sort.append((server_tick,sort[-1][1]))
     x,y = zip(*sort)
-    plt.plot(x, y, label=server)
-#ax.plot(t,s)
+    plt.plot(x, y, styles[count], label=server)
+    count += 1
 plt.legend(loc="upper left")
 plt.title("Server capacity over time")
 
 plt.figure(4)
 plt.subplot(111)
-
+count = 0
 for server in server_speed:
     sort = sorted(server_speed[server].items())
+    sort.append((server_tick,sort[-1][1]))
     x,y = zip(*sort)
-    plt.plot(x, y, label=server)
-#ax.plot(t,s)
+    plt.plot(x, y, styles[count], label=server)
+    count += 1
 plt.legend(loc="upper left")
 plt.title("Server speed over time")
 
