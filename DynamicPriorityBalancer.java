@@ -106,7 +106,7 @@ public class DynamicPriorityBalancer extends UnicastRemoteObject implements Load
 	@Override
 	public void run() {
 		while (servers.size() > 0 || !serversStarted) {
-			if (!requests.isEmpty()) {
+			if (!requests.isEmpty() && !servers.isEmpty()) {
 				try {
 					IServer curServer = null;
 					for (ServerHelper s : serverPriorities) {
@@ -119,7 +119,7 @@ public class DynamicPriorityBalancer extends UnicastRemoteObject implements Load
 					}
 					if (curServer != null) {
 						IRequest curRequest = requests.poll();
-						curServer.addPatient(curRequest);
+						curServer.addRequest(curRequest);
 					}
 					else {
 						Thread.sleep(50);

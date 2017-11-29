@@ -61,7 +61,7 @@ public class DynamicSimpleRRBalancer extends UnicastRemoteObject implements Load
 	@Override
 	public void run() {
 		int serverTurn = 0;
-		while (servers.size() > 0 || !serversStarted) {
+		while (servers.size() > 0 || !serversStarted && !servers.isEmpty()) {
 			if (!requests.isEmpty()) {
 				if (serverTurn >= servers.size())
 					serverTurn = serverTurn % servers.size();
@@ -72,7 +72,7 @@ public class DynamicSimpleRRBalancer extends UnicastRemoteObject implements Load
 							IRequest curRequest = requests.peek();
 							if (curServer.isAvailable()) {
 								requests.poll();
-						curServer.addPatient(curRequest);
+						curServer.addRequest(curRequest);
 					}
 //					else
 //						System.out.printf("Server %s at full capacity, cannot store %s\n", curServer.getID(), curRequest.getID());

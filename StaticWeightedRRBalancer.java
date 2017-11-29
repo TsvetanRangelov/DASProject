@@ -12,7 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.math.BigInteger;
 
-public class DynamicWeightedRRBalancer extends UnicastRemoteObject implements LoadBalancer, Runnable {
+public class StaticWeightedRRBalancer extends UnicastRemoteObject implements LoadBalancer, Runnable {
 
 	private List<String> servers = null;
 	private List<Integer> weights;
@@ -21,11 +21,11 @@ public class DynamicWeightedRRBalancer extends UnicastRemoteObject implements Lo
 	private int stepSize = 0;
 	private boolean serversStarted = false;
 
-	protected DynamicWeightedRRBalancer() throws RemoteException {
+	protected StaticWeightedRRBalancer() throws RemoteException {
 		super();
 	}
 
-	public DynamicWeightedRRBalancer(int port) throws RemoteException,IOException {
+	public StaticWeightedRRBalancer(int port) throws RemoteException,IOException {
 		this.servers = new ArrayList<>();
 		this.weights = new ArrayList<>();
 		this.serverIndexMap = new HashMap<>();
@@ -85,9 +85,7 @@ public class DynamicWeightedRRBalancer extends UnicastRemoteObject implements Lo
 	}
 
 	public void changeWeight(IServer server) throws RemoteException {
-		int index = serverIndexMap.get(server.getID());
-		weights.set(index, server.getProcessingSpeed());
-		calculateStepSize();
+		return;
 	}
 
 	@Override

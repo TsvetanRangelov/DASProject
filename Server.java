@@ -59,7 +59,7 @@ public class Server extends java.rmi.server.UnicastRemoteObject implements IServ
 	}
 
 	@Override
-	public synchronized void addPatient(IRequest request) throws RemoteException {
+	public synchronized void addRequest(IRequest request) throws RemoteException {
 		requests.add(request);
 		if (requests.size() >= capacity)
 			isAvailable = false;

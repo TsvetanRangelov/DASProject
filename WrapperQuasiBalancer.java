@@ -31,7 +31,6 @@ public class WrapperQuasiBalancer extends UnicastRemoteObject implements LoadBal
 		this.servers = new HashMap<String, IServer>();
 		this.busyServers = new HashMap<String, IServer>();
 		this.requests = new HashMap<String, IRequest>();
-		MyLogger.setup();
 		if (System.getSecurityManager() == null) {
 			String abc = System.class.getResource("/resources/java.policy").toString();
 			System.out.println(abc);
@@ -79,7 +78,7 @@ public class WrapperQuasiBalancer extends UnicastRemoteObject implements LoadBal
 	}
 
 	public boolean dispatch(String requestID, String id) throws RemoteException {
-		servers.get(id).addPatient(requests.get(requestID));
+		servers.get(id).addRequest(requests.get(requestID));
 		requests.remove(requestID);
 		if(!servers.get(id).isAvailable()) {
 			busyServers.put(id, servers.get(id));
