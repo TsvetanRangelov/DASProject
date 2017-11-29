@@ -53,6 +53,12 @@ public class WrapperQuasiBalancer extends UnicastRemoteObject implements LoadBal
 
 	
 	public void addRequest(IRequest request) throws RemoteException {
+		for(IServer s: busyServers.values()) {
+			if(s.isAvailable()) {
+				QuasiBalancer.addServer(s.getID());
+			}
+			busyServers.remove(s);
+		}
 		requests.put(request.getID(), request);
 		QuasiBalancer.processRequest(request.getPriority(),request.getID());
 	}

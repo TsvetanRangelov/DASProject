@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.PriorityBlockingQueue;
 
+import jdk.nashorn.internal.ir.RuntimeNode.Request;
+
 
 public class QuasiBalancer extends UnicastRemoteObject{
 
@@ -76,16 +78,15 @@ public class QuasiBalancer extends UnicastRemoteObject{
 			}
 			return processRequest(10,requestID);
 		}
-		//priorityTable.forEach((k,v) -> System.out.println("key: "+k+" value:"+v.size()));
 		frequencyTable.set(priority,frequencyTable.get(priority)+1);
 		try {
 			UnknownServer server = priorityTable.get(priority).poll();
 			speedTable.set(priority,speedTable.get(priority)-server.speed);
 			float startTime = System.nanoTime();
-			boolean busy = parent.dispatch(requestID, server.id);
+			boolean available = parent.dispatch(requestID, server.id);
 			float endTime = System.nanoTime();
 			server.updateSpeed(endTime - startTime);
-			if(!busy)
+			if(available)
 			insertServer(server);
 			
 		}catch(Exception e) {
@@ -97,18 +98,12 @@ public class QuasiBalancer extends UnicastRemoteObject{
 
 
 	private void insertServer(UnknownServer server) throws InterruptedException {
-		System.out.println("Inserting server"+server.id);
 		for(int i = 1; i<10;++i) {
 			synchronized(priorityTable){
-				if(priorityTable.get(i).peek()==null) {
-					speedTable.set(i,speedTable.get(i)+server.speed);
-					System.out.println("Inserting server"+server.id+"at "+ i);
-					priorityTable.get(i).put(server);
-					break;
-				}
-				if(getAverageRatio()<speedTable.get(i)/frequencyTable.get(i)) {
+				if(priorityTable.get(i).size()==0) {
 					speedTable.set(i,speedTable.get(i)+server.speed);
 					priorityTable.get(i).put(server);
+					return;
 				}
 			}
 		}
