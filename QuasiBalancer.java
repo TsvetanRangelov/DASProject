@@ -70,6 +70,7 @@ public class QuasiBalancer extends UnicastRemoteObject{
 
 	
 	public String processRequest(int priority, String requestID) throws RemoteException {
+		
 		if(priority == -1) {
 			try {
 				Thread.sleep(100);
@@ -100,9 +101,9 @@ public class QuasiBalancer extends UnicastRemoteObject{
 	private void insertServer(UnknownServer server) throws InterruptedException {
 		for(int i = 1; i<10;++i) {
 			synchronized(priorityTable){
-				if(priorityTable.get(i).size()==0) {
-					speedTable.set(i,speedTable.get(i)+server.speed);
-					priorityTable.get(i).put(server);
+				if(priorityTable.get((3*i)%10).size()==0) {
+					speedTable.set((3*i)%10,speedTable.get((3*i)%10)+server.speed);
+					priorityTable.get((3*i)%10).put(server);
 					return;
 				}
 			}
