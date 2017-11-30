@@ -109,7 +109,7 @@ public class Server extends java.rmi.server.UnicastRemoteObject implements IServ
 			ConcurrentLinkedQueue<IRequest> remainingReqs = new ConcurrentLinkedQueue<>();
 			int counter = 0;
 			for (IRequest req : requests) {
-				if (counter >= capacity)
+				if (counter < capacity)
 					remainingReqs.add(req);
 				else
 					balancer.addRequest(req);
@@ -165,11 +165,12 @@ public class Server extends java.rmi.server.UnicastRemoteObject implements IServ
 				if (!requests.isEmpty()) {
 					IRequest curRequest = requests.peek();
 					if(debug){
-						System.out.println(ID + " req "+requests.size()+" proc "+totalRequestsProcessed);
+						System.out.println(ID + " queue size: "+requests.size()+", requests processed: "+totalRequestsProcessed);
 					}
 					if (this.processRequest(curRequest)) {
 						requests.poll();
-						isAvailable = true;
+						if (requests.size() <= capacity)
+							isAvailable = true;
 						if(this.balancer.getClass()==WrapperQuasiBalancer.class) {
 							((WrapperQuasiBalancer)this.balancer).RegisterServer(this);
 						}
@@ -185,7 +186,7 @@ public class Server extends java.rmi.server.UnicastRemoteObject implements IServ
 					else
 						uptimeBeforeFirstRequest += 100;
 				}
-				if (totalUptime > 100000 || uptimeBeforeFirstRequest > 150000)
+				if (totalUptime > 200000 || uptimeBeforeFirstRequest > 150000)
 					break;
 			}
 			System.out.printf("Server %s total working time %d, uptime %d, downtime %d, total processed %d\n", ID, totalProcessingTime, totalUptime, totalDynamicDowntime, totalRequestsProcessed);

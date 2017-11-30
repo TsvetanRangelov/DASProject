@@ -42,6 +42,7 @@ public class DynamicSimpleRRBalancer extends UnicastRemoteObject implements Load
 	@Override
 	public void RegisterServer(IServer server) throws RemoteException {
 		servers.add(server.getID());
+		System.out.println(servers.size());
 		serversStarted = true;
 	}
 
@@ -61,8 +62,8 @@ public class DynamicSimpleRRBalancer extends UnicastRemoteObject implements Load
 	@Override
 	public void run() {
 		int serverTurn = 0;
-		while (servers.size() > 0 || !serversStarted && !servers.isEmpty()) {
-			if (!requests.isEmpty()) {
+		while (servers.size() > 0 || !serversStarted) {
+			if (servers.size() > 0 && !requests.isEmpty()) {
 				if (serverTurn >= servers.size())
 					serverTurn = serverTurn % servers.size();
 				// Currently, all servers are stored locally, so have same IP/port
@@ -81,6 +82,14 @@ public class DynamicSimpleRRBalancer extends UnicastRemoteObject implements Load
 					e.printStackTrace();
 				}
 				serverTurn++;
+			}
+			else {
+				try {
+					Thread.sleep(1);
+				}
+				catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 		System.out.println("Load balancer shutting down");
