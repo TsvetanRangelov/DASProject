@@ -1,0 +1,10 @@
+Instructions to run the code supplied
+-------------------------------------
+
+1) run javac *.java in the source folder to compile all files
+2) run the program and pipe the output to a file:
+    - java TestingClass [wrr|q|swrr] debug > <name_of_file>
+3) run the python script in the testing directory passing in the name of the file
+    - python decode_debug.py <name_of_file>
+
+To run another algorithm make sure to stop the execution of the java program
