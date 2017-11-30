@@ -171,9 +171,6 @@ public class Server extends java.rmi.server.UnicastRemoteObject implements IServ
 						requests.poll();
 						if (requests.size() <= capacity)
 							isAvailable = true;
-						if(this.balancer.getClass()==WrapperQuasiBalancer.class) {
-							((WrapperQuasiBalancer)this.balancer).RegisterServer(this);
-						}
 						this.randomDynamicEffect();
 //						System.out.printf("Server %s processed %s with processing time %d, total processed %d\n", ID, curRequest.getID(), curRequest.getProcessingTime(), totalRequestsProcessed);
 //						System.out.printf("Total server %s processing time: %d/(%d + %d)\n", ID, totalProcessingTime, totalUptime, totalDynamicDowntime);

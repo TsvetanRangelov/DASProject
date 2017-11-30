@@ -70,7 +70,7 @@ public class QuasiBalancer extends UnicastRemoteObject{
 
 	
 	public String processRequest(int priority, String requestID) throws RemoteException {
-		
+		//If there is no server available to process the request, wait 100ms and try again
 		if(priority == -1) {
 			try {
 				Thread.sleep(100);
@@ -79,6 +79,7 @@ public class QuasiBalancer extends UnicastRemoteObject{
 			}
 			return processRequest(10,requestID);
 		}
+		//Update the frequency table to remember that a priority of that type has entered
 		frequencyTable.set(priority,frequencyTable.get(priority)+1);
 		try {
 			UnknownServer server = priorityTable.get(priority).poll();
@@ -90,18 +91,25 @@ public class QuasiBalancer extends UnicastRemoteObject{
 			if(available)
 			insertServer(server);
 			
-		}catch(Exception e) {
+		}catch(Exception e) {	//No server at that slot, check next priority
 			frequencyTable.set(priority,frequencyTable.get(priority)-1);
 			processRequest(priority-1, requestID);
 		}
 		return null;
 	}
 
-
+	//Find a new place for a freed server based on speed
 	private void insertServer(UnknownServer server) throws InterruptedException {
 		for(int i = 1; i<10;++i) {
 			synchronized(priorityTable){
-				if(priorityTable.get((3*i)%10).size()==0) {
+				//Check if the priority slot is empty
+				if(priorityTable.get((3*i)%10).size()==0 ) {
+					speedTable.set((3*i)%10,speedTable.get((3*i)%10)+server.speed);
+					priorityTable.get((3*i)%10).put(server);
+					return;
+				}
+				//Insert the server at a below average slot
+				if(speedTable.get((3*i)%10)<getAverageRatio()) {
 					speedTable.set((3*i)%10,speedTable.get((3*i)%10)+server.speed);
 					priorityTable.get((3*i)%10).put(server);
 					return;
@@ -111,7 +119,7 @@ public class QuasiBalancer extends UnicastRemoteObject{
 		
 	}
 
-
+	//Check the average measurements of the rows
 	private float getAverageRatio() {
 		float sum=0, sumFreq=0;
 		for(float speed: speedTable) {
@@ -123,7 +131,7 @@ public class QuasiBalancer extends UnicastRemoteObject{
 		return sum/sumFreq;
 	}
 
-
+	//A representation for an unknown server
 	private class UnknownServer implements Comparable<UnknownServer>{
 
 		private float speed=0;
