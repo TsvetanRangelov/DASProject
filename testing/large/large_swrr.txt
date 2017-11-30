@@ -1,0 +1,331 @@
+rmi://localhost:1099/LoadBalancer
+Establishing load balancer successfully
+Servers will be loud.
+rmi://localhost:1099/Glasgow
+Establishing server Glasgow successfully
+Server Glasgow changing capacity from 10 to 10
+Server Glasgow changing processing speed from 2 to 2
+rmi://localhost:1099/Edinburgh
+Establishing server Edinburgh successfully
+Server Edinburgh changing capacity from 10 to 10
+Server Edinburgh changing processing speed from 4 to 4
+rmi://localhost:1099/London
+Establishing server London successfully
+Server London changing capacity from 10 to 10
+Server London changing processing speed from 6 to 6
+Registered server Edinburgh
+Registered server London
+Registered server Glasgow
+Creating requests
+Edinburgh req 1 proc 0
+London req 1 proc 0
+Glasgow req 1 proc 0
+London req 4 proc 1
+Edinburgh req 4 proc 1
+London req 7 proc 2
+Edinburgh req 7 proc 2
+London req 9 proc 3
+Glasgow req 4 proc 1
+London req 9 proc 4
+Edinburgh req 9 proc 3
+London req 9 proc 5
+Edinburgh req 9 proc 4
+London req 9 proc 6
+Glasgow req 9 proc 2
+London req 9 proc 7
+Edinburgh req 9 proc 5
+London req 9 proc 8
+Edinburgh req 9 proc 6
+London req 9 proc 9
+Glasgow req 9 proc 3
+London req 9 proc 10
+Edinburgh req 9 proc 7
+London req 9 proc 11
+Edinburgh req 9 proc 8
+London req 9 proc 12
+Glasgow req 9 proc 4
+London req 9 proc 13
+Edinburgh req 9 proc 9
+London req 9 proc 14
+London req 9 proc 15
+Edinburgh req 9 proc 10
+Glasgow req 9 proc 5
+London req 9 proc 16
+London req 9 proc 17
+Edinburgh req 9 proc 11
+London req 9 proc 18
+Edinburgh req 9 proc 12
+Glasgow req 9 proc 6
+London req 9 proc 19
+London req 9 proc 20
+Edinburgh req 9 proc 13
+London req 9 proc 21
+Glasgow req 9 proc 7
+Edinburgh req 9 proc 14
+London req 9 proc 22
+Edinburgh req 9 proc 15
+London req 9 proc 23
+Glasgow req 9 proc 8
+London req 9 proc 24
+Edinburgh req 9 proc 16
+London req 9 proc 25
+Edinburgh req 9 proc 17
+London req 9 proc 26
+Glasgow req 9 proc 9
+London req 9 proc 27
+Edinburgh req 9 proc 18
+London req 9 proc 28
+Edinburgh req 9 proc 19
+London req 9 proc 29
+Glasgow req 9 proc 10
+London req 9 proc 30
+Edinburgh req 9 proc 20
+London req 9 proc 31
+Edinburgh req 9 proc 21
+London req 9 proc 32
+Glasgow req 9 proc 11
+Server London changing capacity from 10 to 11 (33 processed)
+London req 10 proc 33
+Edinburgh req 9 proc 22
+London req 10 proc 34
+Edinburgh req 9 proc 23
+Glasgow req 9 proc 12
+London req 10 proc 35
+London req 10 proc 36
+Edinburgh req 9 proc 24
+London req 10 proc 37
+Glasgow req 9 proc 13
+London req 10 proc 38
+Edinburgh req 9 proc 25
+London req 10 proc 39
+Edinburgh req 9 proc 26
+London req 10 proc 40
+Glasgow req 9 proc 14
+London req 10 proc 41
+Edinburgh req 9 proc 27
+London req 10 proc 42
+Edinburgh req 9 proc 28
+London req 10 proc 43
+Glasgow req 9 proc 15
+London req 10 proc 44
+Edinburgh req 9 proc 29
+London req 10 proc 45
+London req 10 proc 46
+Edinburgh req 9 proc 30
+Glasgow req 9 proc 16
+London req 10 proc 47
+Edinburgh req 9 proc 31
+London req 10 proc 48
+London req 10 proc 49
+Edinburgh req 9 proc 32
+Glasgow req 9 proc 17
+London req 10 proc 50
+Edinburgh req 9 proc 33
+London req 10 proc 51
+London req 10 proc 52
+Edinburgh req 9 proc 34
+London req 10 proc 53
+Glasgow req 9 proc 18
+London req 10 proc 54
+Edinburgh req 9 proc 35
+London req 10 proc 55
+Edinburgh req 9 proc 36
+Glasgow req 9 proc 19
+London req 10 proc 56
+Edinburgh req 9 proc 37
+London req 10 proc 57
+London req 10 proc 58
+Edinburgh req 9 proc 38
+London req 10 proc 59
+Glasgow req 9 proc 20
+Server London changing capacity from 11 to 14 (60 processed)
+London req 10 proc 60
+Edinburgh req 9 proc 39
+London req 13 proc 61
+Edinburgh req 9 proc 40
+London req 13 proc 62
+Glasgow req 9 proc 21
+London req 13 proc 63
+Edinburgh req 9 proc 41
+London req 13 proc 64
+Server Edinburgh changing processing speed from 4 to 2 (42 processed)
+Edinburgh req 9 proc 42
+London req 13 proc 65
+Glasgow req 9 proc 22
+London req 13 proc 66
+London req 13 proc 67
+Edinburgh req 9 proc 43
+London req 13 proc 68
+Glasgow req 9 proc 23
+London req 13 proc 69
+Edinburgh req 9 proc 44
+Server London changing processing speed from 6 to 8 (70 processed)
+London req 13 proc 70
+London req 13 proc 71
+Glasgow req 9 proc 24
+London req 13 proc 72
+London req 13 proc 73
+Edinburgh req 9 proc 45
+London req 13 proc 74
+London req 13 proc 75
+Glasgow req 9 proc 25
+London req 13 proc 76
+London req 13 proc 77
+Edinburgh req 9 proc 46
+London req 13 proc 78
+London req 13 proc 79
+Glasgow req 9 proc 26
+London req 13 proc 80
+London req 13 proc 81
+Server Edinburgh changing capacity from 10 to 8 (47 processed)
+Total waiting: 10
+Server Edinburgh changing processing speed from 2 to 1 (47 processed)
+Edinburgh req 2 proc 47
+London req 13 proc 82
+Server Glasgow changing capacity from 10 to 7 (27 processed)
+Total waiting: 9
+Glasgow req 2 proc 27
+London req 13 proc 83
+London req 13 proc 84
+London req 13 proc 85
+London req 13 proc 86
+Glasgow req 1 proc 28
+London req 13 proc 87
+London req 13 proc 88
+Server London changing processing speed from 8 to 18 (89 processed)
+London req 13 proc 89
+London req 13 proc 90
+London req 13 proc 91
+London req 13 proc 92
+London req 13 proc 93
+Glasgow req 6 proc 29
+London req 13 proc 94
+Edinburgh req 1 proc 48
+London req 13 proc 95
+London req 13 proc 96
+London req 13 proc 97
+London req 13 proc 98
+London req 13 proc 99
+London req 13 proc 100
+Glasgow req 6 proc 30
+London req 13 proc 101
+London req 13 proc 102
+London req 13 proc 103
+London req 13 proc 104
+London req 13 proc 105
+London req 13 proc 106
+London req 13 proc 107
+London req 13 proc 108
+London req 13 proc 109
+London req 13 proc 110
+Glasgow req 6 proc 31
+London req 13 proc 111
+London req 13 proc 112
+London req 13 proc 113
+Edinburgh req 7 proc 49
+London req 13 proc 114
+London req 13 proc 115
+London req 13 proc 116
+London req 13 proc 117
+London req 13 proc 118
+London req 13 proc 119
+London req 13 proc 120
+Server Glasgow changing capacity from 7 to 13 (32 processed)
+Glasgow req 6 proc 32
+London req 13 proc 121
+London req 13 proc 122
+London req 13 proc 123
+London req 13 proc 124
+London req 13 proc 125
+London req 13 proc 126
+London req 13 proc 127
+London req 13 proc 128
+London req 13 proc 129
+London req 13 proc 130
+Glasgow req 12 proc 33
+London req 13 proc 131
+Edinburgh req 7 proc 50
+London req 13 proc 132
+London req 13 proc 133
+London req 13 proc 134
+London req 13 proc 135
+London req 13 proc 136
+London req 13 proc 137
+London req 13 proc 138
+Glasgow req 12 proc 34
+London req 13 proc 139
+London req 13 proc 140
+London req 13 proc 141
+London req 13 proc 142
+London req 13 proc 143
+London req 13 proc 144
+London req 13 proc 145
+London req 13 proc 146
+London req 13 proc 147
+London req 13 proc 148
+Glasgow req 12 proc 35
+Server London changing capacity from 14 to 19 (149 processed)
+London req 13 proc 149
+London req 18 proc 150
+London req 18 proc 151
+Edinburgh req 7 proc 51
+London req 18 proc 152
+London req 18 proc 153
+London req 18 proc 154
+London req 18 proc 155
+London req 18 proc 156
+London req 18 proc 157
+Glasgow req 12 proc 36
+London req 18 proc 158
+London req 18 proc 159
+London req 18 proc 160
+London req 18 proc 161
+London req 18 proc 162
+London req 18 proc 163
+London req 18 proc 164
+London req 18 proc 165
+London req 18 proc 166
+London req 18 proc 167
+Glasgow req 12 proc 37
+London req 18 proc 168
+Edinburgh req 7 proc 52
+London req 18 proc 169
+London req 18 proc 170
+London req 18 proc 171
+London req 18 proc 172
+London req 18 proc 173
+London req 18 proc 174
+London req 18 proc 175
+Glasgow req 12 proc 38
+London req 18 proc 176
+London req 18 proc 177
+London req 18 proc 178
+London req 18 proc 179
+London req 18 proc 180
+London req 18 proc 181
+London req 18 proc 182
+London req 18 proc 183
+Glasgow req 12 proc 39
+London req 18 proc 184
+London req 18 proc 185
+Edinburgh req 7 proc 53
+London req 18 proc 186
+London req 18 proc 187
+London req 18 proc 188
+London req 18 proc 189
+London req 18 proc 190
+London req 18 proc 191
+London req 18 proc 192
+London req 18 proc 193
+Glasgow req 12 proc 40
+London req 18 proc 194
+London req 18 proc 195
+London req 18 proc 196
+London req 18 proc 197
+Server London total working time 100234, uptime 100234, downtime 0, total processed 198
+Shutting down server London
+Server Edinburgh total working time 101767, uptime 101767, downtime 0, total processed 54
+Shutting down server Edinburgh
+Server Glasgow total working time 101538, uptime 101538, downtime 0, total processed 41
+Shutting down server Glasgow
+Load balancer shutting down

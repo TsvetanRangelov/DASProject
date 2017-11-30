@@ -71,7 +71,7 @@ for line in data:
             server_speed[server][server_tick+1] = end
         else:
             server_speed[server] = {server_tick: start, server_tick+1: end}
-
+            
 styles = ["-","--",":"]
 
 plt.figure(1)

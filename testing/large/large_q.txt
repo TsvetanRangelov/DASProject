@@ -1,0 +1,119 @@
+file:/home/vinas/projects/das-project/DASProject/resources/java.policy
+rmi://localhost:1099/QuasiBalancer
+Establishing load balancer successfully
+rmi://localhost:1099/LoadBalancer
+Establishing wrapper balancer successfully
+Servers will be loud.
+rmi://localhost:1099/Glasgow
+Establishing server Glasgow successfully
+Server Glasgow changing capacity from 10 to 10
+Server Glasgow changing processing speed from 2 to 2
+rmi://localhost:1099/Edinburgh
+Establishing server Edinburgh successfully
+Server Edinburgh changing capacity from 10 to 10
+Server Edinburgh changing processing speed from 4 to 4
+rmi://localhost:1099/London
+Establishing server London successfully
+Server London changing capacity from 10 to 10
+Server London changing processing speed from 6 to 6
+Registered server London
+Registered server Edinburgh
+Registered server Glasgow
+Creating requests
+Glasgow req 1 proc 0
+London req 1 proc 0
+Edinburgh req 1 proc 0
+London req 1 proc 1
+Glasgow req 9 proc 1
+Edinburgh req 9 proc 1
+London req 3 proc 2
+Edinburgh req 9 proc 2
+London req 9 proc 3
+London req 8 proc 4
+Glasgow req 10 proc 2
+Edinburgh req 8 proc 3
+London req 7 proc 5
+Edinburgh req 7 proc 4
+London req 6 proc 6
+London req 5 proc 7
+Glasgow req 9 proc 3
+Edinburgh req 6 proc 5
+Server London changing processing speed from 6 to 4 (8 processed)
+London req 4 proc 8
+Edinburgh req 5 proc 6
+London req 3 proc 9
+Glasgow req 8 proc 4
+Edinburgh req 4 proc 7
+London req 2 proc 10
+Edinburgh req 3 proc 8
+London req 1 proc 11
+Glasgow req 7 proc 5
+Edinburgh req 2 proc 9
+Edinburgh req 1 proc 10
+Glasgow req 6 proc 6
+Glasgow req 5 proc 7
+Glasgow req 4 proc 8
+Glasgow req 3 proc 9
+Glasgow req 2 proc 10
+Glasgow req 1 proc 11
+Edinburgh req 1 proc 11
+Glasgow req 1 proc 12
+London req 1 proc 12
+Edinburgh req 2 proc 12
+London req 4 proc 13
+Server Edinburgh changing processing speed from 4 to 2 (13 processed)
+Edinburgh req 5 proc 13
+Glasgow req 10 proc 13
+London req 6 proc 14
+Edinburgh req 10 proc 14
+London req 11 proc 15
+Glasgow req 10 proc 14
+London req 14 proc 16
+Edinburgh req 14 proc 15
+London req 13 proc 17
+Glasgow req 9 proc 15
+London req 12 proc 18
+Edinburgh req 13 proc 16
+London req 11 proc 19
+Server Glasgow changing capacity from 10 to 13 (16 processed)
+Glasgow req 8 proc 16
+London req 10 proc 20
+Edinburgh req 12 proc 17
+London req 9 proc 21
+Glasgow req 7 proc 17
+London req 8 proc 22
+London req 7 proc 23
+Edinburgh req 11 proc 18
+Glasgow req 6 proc 18
+London req 6 proc 24
+Edinburgh req 10 proc 19
+London req 5 proc 25
+Glasgow req 5 proc 19
+London req 4 proc 26
+London req 3 proc 27
+Edinburgh req 9 proc 20
+Glasgow req 4 proc 20
+London req 2 proc 28
+London req 1 proc 29
+Glasgow req 3 proc 21
+Edinburgh req 8 proc 21
+Glasgow req 2 proc 22
+Edinburgh req 7 proc 22
+Glasgow req 1 proc 23
+Edinburgh req 6 proc 23
+Edinburgh req 5 proc 24
+Edinburgh req 4 proc 25
+Edinburgh req 3 proc 26
+Edinburgh req 2 proc 27
+Edinburgh req 1 proc 28
+Edinburgh req 1 proc 29
+Glasgow req 1 proc 24
+London req 1 proc 30
+London req 3 proc 31
+Edinburgh req 10 proc 30
+Server Glasgow total working time 62701, uptime 101201, downtime 0, total processed 25
+Shutting down server Glasgow
+Server London total working time 36294, uptime 100894, downtime 0, total processed 32
+Shutting down server London
+Server Edinburgh total working time 63222, uptime 102122, downtime 0, total processed 31
+Shutting down server Edinburgh
