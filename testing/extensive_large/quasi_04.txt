@@ -1,0 +1,167 @@
+file:/home/vinas/projects/das-project/DASProject/resources/java.policy
+rmi://localhost:1099/QuasiBalancer
+Establishing load balancer successfully
+rmi://localhost:1099/LoadBalancer
+Establishing wrapper balancer successfully
+Servers will be loud.
+rmi://localhost:1099/Glasgow
+Establishing server Glasgow successfully
+Server Glasgow changing capacity from 10 to 10
+Server Glasgow changing processing speed from 2 to 2
+rmi://localhost:1099/Edinburgh
+Establishing server Edinburgh successfully
+Server Edinburgh changing capacity from 10 to 10
+Server Edinburgh changing processing speed from 4 to 4
+rmi://localhost:1099/London
+Establishing server London successfully
+Server London changing capacity from 10 to 10
+Server London changing processing speed from 6 to 6
+Registered server Edinburgh
+Registered server Glasgow
+Registered server London
+Creating requests
+Glasgow queue size: 1, requests processed: 0
+London queue size: 1, requests processed: 0
+Edinburgh queue size: 1, requests processed: 0
+London queue size: 3, requests processed: 1
+London queue size: 3, requests processed: 2
+Edinburgh queue size: 4, requests processed: 1
+Glasgow queue size: 6, requests processed: 1
+London queue size: 8, requests processed: 3
+Edinburgh queue size: 4, requests processed: 2
+London queue size: 9, requests processed: 4
+London queue size: 9, requests processed: 5
+Edinburgh queue size: 9, requests processed: 3
+Glasgow queue size: 9, requests processed: 2
+London queue size: 8, requests processed: 6
+Edinburgh queue size: 8, requests processed: 4
+London queue size: 7, requests processed: 7
+London queue size: 6, requests processed: 8
+Edinburgh queue size: 7, requests processed: 5
+Glasgow queue size: 8, requests processed: 3
+London queue size: 5, requests processed: 9
+Edinburgh queue size: 6, requests processed: 6
+London queue size: 4, requests processed: 10
+London queue size: 3, requests processed: 11
+Edinburgh queue size: 5, requests processed: 7
+Glasgow queue size: 7, requests processed: 4
+London queue size: 2, requests processed: 12
+Edinburgh queue size: 4, requests processed: 8
+London queue size: 1, requests processed: 13
+Server Edinburgh changing capacity from 10 to 9 (9 processed)
+Edinburgh queue size: 3, requests processed: 9
+Glasgow queue size: 6, requests processed: 5
+Edinburgh queue size: 2, requests processed: 10
+Edinburgh queue size: 1, requests processed: 11
+Glasgow queue size: 5, requests processed: 6
+Glasgow queue size: 4, requests processed: 7
+Glasgow queue size: 3, requests processed: 8
+Glasgow queue size: 2, requests processed: 9
+Glasgow queue size: 1, requests processed: 10
+Edinburgh queue size: 1, requests processed: 12
+Glasgow queue size: 1, requests processed: 11
+London queue size: 1, requests processed: 14
+Edinburgh queue size: 9, requests processed: 13
+London queue size: 3, requests processed: 15
+Edinburgh queue size: 9, requests processed: 14
+London queue size: 4, requests processed: 16
+London queue size: 8, requests processed: 17
+Edinburgh queue size: 8, requests processed: 15
+Glasgow queue size: 9, requests processed: 12
+London queue size: 13, requests processed: 18
+Edinburgh queue size: 8, requests processed: 16
+London queue size: 13, requests processed: 19
+Glasgow queue size: 13, requests processed: 13
+Edinburgh queue size: 9, requests processed: 17
+London queue size: 13, requests processed: 20
+London queue size: 12, requests processed: 21
+Edinburgh queue size: 8, requests processed: 18
+Server London changing capacity from 10 to 13 (22 processed)
+London queue size: 11, requests processed: 22
+Edinburgh queue size: 7, requests processed: 19
+Glasgow queue size: 12, requests processed: 14
+London queue size: 10, requests processed: 23
+Edinburgh queue size: 6, requests processed: 20
+London queue size: 9, requests processed: 24
+London queue size: 8, requests processed: 25
+Glasgow queue size: 11, requests processed: 15
+Edinburgh queue size: 5, requests processed: 21
+London queue size: 7, requests processed: 26
+London queue size: 6, requests processed: 27
+Edinburgh queue size: 4, requests processed: 22
+London queue size: 5, requests processed: 28
+Glasgow queue size: 10, requests processed: 16
+Edinburgh queue size: 3, requests processed: 23
+London queue size: 4, requests processed: 29
+Edinburgh queue size: 2, requests processed: 24
+London queue size: 3, requests processed: 30
+Glasgow queue size: 9, requests processed: 17
+London queue size: 2, requests processed: 31
+Edinburgh queue size: 1, requests processed: 25
+London queue size: 1, requests processed: 32
+Glasgow queue size: 8, requests processed: 18
+Glasgow queue size: 7, requests processed: 19
+Glasgow queue size: 6, requests processed: 20
+Glasgow queue size: 5, requests processed: 21
+Glasgow queue size: 4, requests processed: 22
+Glasgow queue size: 3, requests processed: 23
+Glasgow queue size: 2, requests processed: 24
+Glasgow queue size: 1, requests processed: 25
+Glasgow queue size: 1, requests processed: 26
+Edinburgh queue size: 1, requests processed: 26
+London queue size: 1, requests processed: 33
+London queue size: 4, requests processed: 34
+Server Edinburgh changing capacity from 9 to 9 (27 processed)
+Edinburgh queue size: 4, requests processed: 27
+London queue size: 6, requests processed: 35
+Edinburgh queue size: 7, requests processed: 28
+London queue size: 8, requests processed: 36
+Glasgow queue size: 7, requests processed: 27
+London queue size: 9, requests processed: 37
+Edinburgh queue size: 10, requests processed: 29
+London queue size: 12, requests processed: 38
+London queue size: 17, requests processed: 39
+Glasgow queue size: 10, requests processed: 28
+Edinburgh queue size: 9, requests processed: 30
+London queue size: 17, requests processed: 40
+London queue size: 16, requests processed: 41
+Edinburgh queue size: 9, requests processed: 31
+Glasgow queue size: 10, requests processed: 29
+London queue size: 15, requests processed: 42
+Edinburgh queue size: 8, requests processed: 32
+London queue size: 14, requests processed: 43
+London queue size: 13, requests processed: 44
+Edinburgh queue size: 7, requests processed: 33
+Glasgow queue size: 9, requests processed: 30
+London queue size: 12, requests processed: 45
+Edinburgh queue size: 6, requests processed: 34
+London queue size: 11, requests processed: 46
+London queue size: 10, requests processed: 47
+Edinburgh queue size: 5, requests processed: 35
+Glasgow queue size: 8, requests processed: 31
+London queue size: 9, requests processed: 48
+Edinburgh queue size: 4, requests processed: 36
+London queue size: 8, requests processed: 49
+London queue size: 7, requests processed: 50
+Glasgow queue size: 7, requests processed: 32
+Edinburgh queue size: 3, requests processed: 37
+London queue size: 6, requests processed: 51
+London queue size: 5, requests processed: 52
+Edinburgh queue size: 2, requests processed: 38
+London queue size: 4, requests processed: 53
+Glasgow queue size: 6, requests processed: 33
+Edinburgh queue size: 1, requests processed: 39
+London queue size: 3, requests processed: 54
+London queue size: 2, requests processed: 55
+London queue size: 1, requests processed: 56
+Glasgow queue size: 5, requests processed: 34
+Glasgow queue size: 4, requests processed: 35
+Glasgow queue size: 3, requests processed: 36
+Glasgow queue size: 2, requests processed: 37
+Glasgow queue size: 1, requests processed: 38
+Server Glasgow total working time 94227, uptime 200027, downtime 0, total processed 39
+Shutting down server Glasgow
+Server London total working time 47148, uptime 200048, downtime 0, total processed 57
+Shutting down server London
+Server Edinburgh total working time 49885, uptime 200085, downtime 0, total processed 40
+Shutting down server Edinburgh

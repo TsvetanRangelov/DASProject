@@ -17,7 +17,7 @@ data = file.read().splitlines()
 
 # assume this format:
 # Server_name req $num proc $num
-server_out = re.compile("[a-zA-Z0-9]+\sreq\s[0-9]+\sproc\s[0-9]+")
+server_out = re.compile("([a-zA-Z0-9]+) queue size: ([0-9]+), requests processed: ([0-9]+)")
 capacity_change = re.compile("Server ([a-zA-Z0-9]+) changing capacity from ([0-9]+) to ([0-9]+).*")
 speed_change = re.compile("Server ([a-zA-Z0-9]+) changing processing speed from ([0-9]+) to ([0-9]+).*")
 
@@ -35,6 +35,10 @@ for line in data:
         server = temp[0]
         req = temp[2]
         proc = temp[4]
+
+        server = server_out.match(line).group(1)
+        req = server_out.match(line).group(2)
+        proc = server_out.match(line).group(3)
 
         if server in server_requests.keys():
             server_requests[server][server_tick] = req
@@ -71,7 +75,7 @@ for line in data:
             server_speed[server][server_tick+1] = end
         else:
             server_speed[server] = {server_tick: start, server_tick+1: end}
-            
+
 styles = ["-","--",":"]
 
 plt.figure(1)

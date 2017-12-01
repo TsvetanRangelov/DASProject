@@ -54,7 +54,16 @@ public class TestingClass    {
 			}
 			Thread.sleep(2000);
 
-			FileReader file = new FileReader("requests.csv");
+			FileReader file = null;
+
+			if(args.length > 2 && args[2].equals("small")){
+				file = new FileReader("requests_small.csv");
+			} else if(args.length > 2 && args[2].equals("large")){
+				file = new FileReader("requests_large.csv");
+			} else {
+				file = new FileReader("requests.csv");
+			}
+
 			BufferedReader in = new BufferedReader(file);
 			System.out.println("Creating requests");
 			String line;
