@@ -9,6 +9,9 @@ the provided pdf. Check the report in the provided pdf.
 
 Instructions to run the code supplied
 -------------------------------------
+0) Make sure to start RMI registry in the source folder
+
+   rmiregistry &
 
 1) Run javac *.java in the source folder to compile all files
 
